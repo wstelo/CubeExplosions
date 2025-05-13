@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Exploder : MonoBehaviour
+public class CreatedCubesExploder : MonoBehaviour
 {
     [SerializeField] private int _explosionForce = 200;
     [SerializeField] private int _explosionRadius = 10;

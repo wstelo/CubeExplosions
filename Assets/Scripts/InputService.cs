@@ -5,13 +5,13 @@ public class InputService : MonoBehaviour
 {
     private const int MouseButtonIndex = 0;
 
-    public event Action InputDetected;
+    public event Action LeftMouseButtonInputDetected;
 
     private void Update()
     {
         if (Input.GetMouseButtonDown(MouseButtonIndex))
         {
-            InputDetected?.Invoke();
+            LeftMouseButtonInputDetected?.Invoke();
         }
     }
 }

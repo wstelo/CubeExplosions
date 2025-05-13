@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-public class Raycaster : MonoBehaviour
+public class CubeDetector : MonoBehaviour
 {
     [SerializeField] private Camera _camera;
     [SerializeField] private InputService _inputService;
@@ -13,12 +13,12 @@ public class Raycaster : MonoBehaviour
 
     public void OnEnable()
     {
-        _inputService.InputDetected += CommandToExplode;
+        _inputService.LeftMouseButtonInputDetected += CommandToExplode;
     }
 
     public void OnDisable()
     {
-        _inputService.InputDetected -= CommandToExplode;
+        _inputService.LeftMouseButtonInputDetected -= CommandToExplode;
     }
 
     private void CommandToExplode()
@@ -26,7 +26,7 @@ public class Raycaster : MonoBehaviour
         _ray = _camera.ScreenPointToRay(Input.mousePosition);
         Physics.Raycast(_ray, out _hit, Mathf.Infinity);
 
-        if (_hit.collider.GetComponent<Cube>() == true)
+        if (_hit.collider.GetComponent<Cube>() !=null)
         {
             TargetDetected?.Invoke(_hit.collider.GetComponent<Cube>());
         }
