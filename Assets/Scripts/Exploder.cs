@@ -6,11 +6,11 @@ public class Exploder : MonoBehaviour
     [SerializeField] private int _explosionForce = 200;
     [SerializeField] private int _explosionRadius = 10;
 
-    public void Explode(Cube cube, List<Cube> cubes)
+    public void Explode(Cube cube, List<Rigidbody> targets)
     {
-        foreach (Cube explodeTarget in cubes)
+        foreach (Rigidbody explodeTarget in targets)
         {
-            explodeTarget.GetComponent<Rigidbody>().AddExplosionForce(_explosionForce, cube.transform.position,_explosionRadius);
+            explodeTarget.AddExplosionForce(_explosionForce, cube.transform.position,_explosionRadius);
         }
     }
 }
