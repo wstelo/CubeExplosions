@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public class InputService : MonoBehaviour
@@ -8,6 +9,8 @@ public class InputService : MonoBehaviour
 
     private Ray _ray;
     private RaycastHit _hit;
+
+    public event Action<Cube> TargetDetected;
 
     private void Update()
     {
@@ -24,7 +27,7 @@ public class InputService : MonoBehaviour
 
         if (_hit.collider.GetComponent<Cube>() == true)
         {
-            _hit.collider.GetComponent<Cube>().Explode();
+            TargetDetected?.Invoke(_hit.collider.GetComponent<Cube>());
         }
     }
 }

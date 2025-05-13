@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class ChangeColor : MonoBehaviour
+public class ColorChanger : MonoBehaviour
 {
     private Material _material;
 
