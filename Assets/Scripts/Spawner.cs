@@ -4,6 +4,28 @@ using UnityEngine;
 public class Spawner : MonoBehaviour
 {
     [SerializeField] private Cube _prefab;
+    [SerializeField] private CubeExploder _cubeExploder;
+    [SerializeField] private int _minPositionX;
+    [SerializeField] private int _maxPositionX;
+    [SerializeField] private int _minPositionZ;
+    [SerializeField] private int _maxPositionZ;
+    [SerializeField] private int _positionY;
+    [SerializeField] private int initialCubesCount = 4;
+
+    private void Start()
+    {
+        SpawnInitialCubes();
+    }
+
+    private void SpawnInitialCubes()
+    {
+        for (int i = 0; i < initialCubesCount; i++)
+        {
+            Vector3 spawnArea = new Vector3(Random.Range(_minPositionX, _maxPositionX), _positionY, Random.Range(_minPositionZ, _maxPositionZ));
+            Cube cube = Instantiate(_prefab, spawnArea, Quaternion.identity);
+            cube.ClickedOnCube += ExplodeObject;
+        }
+    }
 
     public List<Rigidbody> Spawn(Cube cube)
     {
@@ -20,15 +42,25 @@ public class Spawner : MonoBehaviour
         {
             Vector3 spawnArea = new Vector3(Random.Range(cube.transform.position.x - spawnRadius, cube.transform.position.x + spawnRadius), spawnAreaOffsetY, Random.Range(cube.transform.position.z - spawnRadius, cube.transform.position.z + spawnRadius));
             Cube newCube = Instantiate(_prefab, spawnArea, Quaternion.identity);
-            newCube.SetParameter(cube.ChanceToSplit / splitDividerCoefficient, cube.transform.localScale / scaleCoefficient, cube.MultiplierValueOfSize);
+            newCube.Initialize(cube.ChanceToSplit / splitDividerCoefficient, cube.transform.localScale / scaleCoefficient, cube.MultiplierValueOfSize);
             newCubes.Add(newCube.Rigidbody);
+            newCube.ClickedOnCube += ExplodeObject;
         }
 
         return newCubes;
     }
 
-    public void DestroyObject(Cube cube)
+    private void ExplodeObject(Cube cube)
     {
-        Destroy(cube.gameObject);
+        if (cube.IsSplitted)
+        {
+            _cubeExploder.Explode(cube.transform, Spawn(cube));
+            Destroy(cube.gameObject);
+        }
+        else
+        {
+            _cubeExploder.Explode(cube);
+            Destroy(cube.gameObject);
+        }
     }
 }

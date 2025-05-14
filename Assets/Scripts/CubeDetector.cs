@@ -1,4 +1,3 @@
-using System;
 using UnityEngine;
 
 public class CubeDetector : MonoBehaviour
@@ -8,8 +7,6 @@ public class CubeDetector : MonoBehaviour
 
     private Ray _ray;
     private RaycastHit _hit;
-
-    public event Action<Cube> TargetDetected;
 
     public void OnEnable()
     {
@@ -25,11 +22,10 @@ public class CubeDetector : MonoBehaviour
     {
         _ray = _camera.ScreenPointToRay(Input.mousePosition);
         Physics.Raycast(_ray, out _hit, Mathf.Infinity);
-        Cube currentObject = _hit.collider.GetComponent<Cube>();
 
-        if (currentObject != null)
+        if (_hit.collider.TryGetComponent<Cube>(out Cube cube))
         {
-            TargetDetected?.Invoke(currentObject);
+            cube.DisableObject();
         }
     }
 }
