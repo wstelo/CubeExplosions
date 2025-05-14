@@ -6,6 +6,7 @@ public class OtherCubesExploder : MonoBehaviour
 {
     [SerializeField] private float _explosionRadius;
     [SerializeField] private float _explosionForce;
+
     public void Explode(Cube cube)
     {
         foreach (var explodableObject in GetExplodableObjects(cube.transform))

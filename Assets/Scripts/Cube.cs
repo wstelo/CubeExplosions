@@ -1,5 +1,7 @@
 using UnityEngine;
 
+[RequireComponent (typeof(Rigidbody))]
+[RequireComponent(typeof(MeshRenderer))]
 public class Cube : MonoBehaviour
 {
     private Material _material;
@@ -8,7 +10,6 @@ public class Cube : MonoBehaviour
     public Rigidbody Rigidbody { get; private set; }
     public bool IsSplitted { get; private set; }
     public float MultiplierValueOfSize { get; private set; } = 1f;
-
 
     private void Awake()
     {
@@ -19,21 +20,7 @@ public class Cube : MonoBehaviour
 
     private void Start()
     {
-        IsSplitted = TryToSplit();
-    }
-
-    private void ChangeColor()
-    {
-        _material.color = new Color(Random.value, Random.value, Random.value, 255);
-    }
-
-    private bool TryToSplit()
-    {
-        float minChanceToSplit = 0;
-        float maxChanceToSplit = 100;
-        float currentChance = Random.Range(minChanceToSplit, maxChanceToSplit);
-
-        return currentChance <= ChanceToSplit;
+        IsSplitted = CanToSplit();
     }
 
     public void SetParameter(float chanceToSplit, Vector3 scale, float multiplierValueOfSize)
@@ -42,5 +29,19 @@ public class Cube : MonoBehaviour
         MultiplierValueOfSize = multiplierValueOfSize + IncreaseMultiplierValue;
         ChanceToSplit = chanceToSplit;
         transform.localScale = scale;
+    }
+
+    private void ChangeColor()
+    {
+        _material.color = new Color(Random.value, Random.value, Random.value, 255);
+    }
+
+    private bool CanToSplit()
+    {
+        float minChanceToSplit = 0;
+        float maxChanceToSplit = 100;
+        float currentChance = Random.Range(minChanceToSplit, maxChanceToSplit);
+
+        return currentChance <= ChanceToSplit;
     }
 }

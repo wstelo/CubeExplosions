@@ -13,22 +13,23 @@ public class CubeDetector : MonoBehaviour
 
     public void OnEnable()
     {
-        _inputService.LeftMouseButtonInputDetected += CommandToExplode;
+        _inputService.MouseButtonToRayDetected += DetectTarget;
     }
 
     public void OnDisable()
     {
-        _inputService.LeftMouseButtonInputDetected -= CommandToExplode;
+        _inputService.MouseButtonToRayDetected -= DetectTarget;
     }
 
-    private void CommandToExplode()
+    private void DetectTarget()
     {
         _ray = _camera.ScreenPointToRay(Input.mousePosition);
         Physics.Raycast(_ray, out _hit, Mathf.Infinity);
+        Cube currentObject = _hit.collider.GetComponent<Cube>();
 
-        if (_hit.collider.GetComponent<Cube>() !=null)
+        if (currentObject != null)
         {
-            TargetDetected?.Invoke(_hit.collider.GetComponent<Cube>());
+            TargetDetected?.Invoke(currentObject);
         }
     }
 }
